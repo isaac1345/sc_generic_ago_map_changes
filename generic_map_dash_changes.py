@@ -42,7 +42,9 @@ class derived_map:
         self.del_list = del_list
         self.prim_wm_item = gis.content.get(self.primary_id)
         self.prim_wm_json = self.prim_wm_item.get_data()
-    def changes(self, layer_level=self.prim_wm_json['operationalLayers']): # recursive changes to layers
+    def changes(self, layer_level="foo"): # recursive changes to layers
+        if layer_level == "foo":
+            layer_level=self.prim_wm_json['operationalLayers']
         for i, layer in enumerate(layer_level):
             if layer['id'] in self.vis_list:
                 layer_level[i]['visibility'] = True
@@ -51,30 +53,44 @@ class derived_map:
             if layer['id'] in self.del_list:
                 del layer_level[i] # the item to del
             if layer['layerType'] == 'GroupLayer':
-                self.changes(layer_level[i])
-            pass
-        pass
+                self.changes(layer_level[i]['layers'])
     def push(self): # push changes to the new_id
-        pass
+        self.deriv_wm_item = gis.content.get(self.new_id)
+        self.deriv_wm_item.update(data = self.prim_wm_json)
 
 class derived_dashboard:
     def __init__(self,primary_id, new_id, del_list):
         self.primary_id = primary_id
         self.new_id = new_id
         self.del_list = del_list
+        self.prim_db_item = gis.content.get(self.primary_id)
+        self.prim_db_json = self.prim_db_item.get_data()
     def changes(self): # deletions for sidebar
-        pass
+        for i, selector in enumerate(self.prim_db_json['sidebar']['selectors']):
+            if selector[id] in self.del_list:
+                del self.prim_db_json['sidebar']['selectors'][i]
     def push(self): # push changes to the new_id
-        pass
-
+        self.deriv_wm_item = gis.content.get(self.new_id)
+        self.deriv_wm_item.update(data = self.prim_db_json)
 
 # %% 
 ############ Setting lists of changes
 
-map_changes = [
-
+map_list = [
+    derived_map("8aab32af2c4d48b091dadb55592f723b","33b382a5fda74641a658128f7c3513b4",["182cc61d735-layer-4"],["18517e8ca9d-layer-10"]) # initial example
 ]
 
-dashboard_changes = [
+dashboard_list = [
     
 ]
+
+# %% 
+############ Running the code
+
+for in_map in map_list:
+    in_map.changes()
+    in_map.push()
+
+for in_db in dashboard_list:
+    in_db.changes()
+    in_db.push()
