@@ -28,16 +28,43 @@ gis = GIS(url, username, password)
 ############ Functions and classes
 
 # Recursion required if layers are nested in groups
-def recursive_layer_changes():
-    pass
+# def recursive_layer_changes():
+#     pass
+
+# def dash_sidebar_changes
 
 # Classes are a nice way to organize and navigate the changes you want to make
 class derived_map:
-    def __init__(self,):
+    def __init__(self,primary_id, new_id, vis_list=[], del_list=[]):
+        self.primary_id = primary_id
+        self.new_id = new_id
+        self.vis_list = vis_list
+        self.del_list = del_list
+        self.prim_wm_item = gis.content.get(self.primary_id)
+        self.prim_wm_json = self.prim_wm_item.get_data()
+    def changes(self, layer_level=self.prim_wm_json['operationalLayers']): # recursive changes to layers
+        for i, layer in enumerate(layer_level):
+            if layer['id'] in self.vis_list:
+                layer_level[i]['visibility'] = True
+            else:
+                layer_level[i]['visibility'] = False
+            if layer['id'] in self.del_list:
+                del layer_level[i] # the item to del
+            if layer['layerType'] == 'GroupLayer':
+                self.changes(layer_level[i])
+            pass
+        pass
+    def push(self): # push changes to the new_id
         pass
 
 class derived_dashboard:
-    def __init__(self,):
+    def __init__(self,primary_id, new_id, del_list):
+        self.primary_id = primary_id
+        self.new_id = new_id
+        self.del_list = del_list
+    def changes(self): # deletions for sidebar
+        pass
+    def push(self): # push changes to the new_id
         pass
 
 
