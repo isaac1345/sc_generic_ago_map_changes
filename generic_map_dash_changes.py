@@ -7,10 +7,7 @@ This code is set up to be content agnostic; you should be able to copy and paste
 
 Updates:
 v0.1
-
-
 '''
-
 
 # %%
 ############ Imports
@@ -42,8 +39,8 @@ class derived_map:
         self.del_list = del_list
         self.prim_wm_item = gis.content.get(self.primary_id)
         self.prim_wm_json = self.prim_wm_item.get_data()
-    def changes(self, layer_level="foo"): # recursive changes to layers
-        if layer_level == "foo":
+    def changes(self, layer_level="initial"): # recursive changes to layers
+        if layer_level == "initial":
             layer_level=self.prim_wm_json['operationalLayers']
         for i, layer in enumerate(layer_level):
             if layer['id'] in self.vis_list:
@@ -77,7 +74,12 @@ class derived_dashboard:
 ############ Setting lists of changes
 
 map_list = [
-    derived_map("8aab32af2c4d48b091dadb55592f723b","33b382a5fda74641a658128f7c3513b4",["182cc61d735-layer-4"],["18517e8ca9d-layer-10"]) # initial example
+    derived_map(
+        "8aab32af2c4d48b091dadb55592f723b",
+        "33b382a5fda74641a658128f7c3513b4",
+        ["182cc61d735-layer-4"], 
+        ["18517e8ca9d-layer-10"]
+        ) # initial example
 ]
 
 dashboard_list = [
