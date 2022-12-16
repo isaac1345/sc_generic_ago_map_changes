@@ -42,14 +42,15 @@ class derived_map:
     def changes(self, layer_level="initial"): # recursive changes to layers
         if layer_level == "initial":
             layer_level=self.prim_wm_json['operationalLayers']
-        for i, layer in enumerate(layer_level):
-            if layer['id'] in self.vis_list:
+        for i in reversed(range(len(layer_level))):
+            layer = layer_level[i]
+            if layer_level[i]['id'] in self.vis_list:
                 layer_level[i]['visibility'] = True
             else:
                 layer_level[i]['visibility'] = False
-            if layer['id'] in self.del_list:
+            if layer_level[i]['id'] in self.del_list: # causes indexing issues
                 del layer_level[i] # the item to del
-            if layer['layerType'] == 'GroupLayer':
+            elif layer_level[i]['layerType'] == 'GroupLayer':
                 self.changes(layer_level[i]['layers'])
     def push(self): # push changes to the new_id
         self.deriv_wm_item = gis.content.get(self.new_id)
