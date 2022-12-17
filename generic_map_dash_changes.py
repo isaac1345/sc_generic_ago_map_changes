@@ -43,7 +43,6 @@ class derived_map:
         if layer_level == "initial":
             layer_level=self.prim_wm_json['operationalLayers']
         for i in reversed(range(len(layer_level))):
-            layer = layer_level[i]
             if layer_level[i]['id'] in self.vis_list:
                 layer_level[i]['visibility'] = True
             else:
