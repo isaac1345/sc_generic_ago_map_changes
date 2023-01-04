@@ -13,13 +13,12 @@ from arcgis.gis import GIS
 from generic_map_dash_changes import *
 import sys
 
-# credentials routine
+# %% 
+############ log in and set up your AGO connection
+# Depending on your needs, you may handle credentials differently
 sys.path.insert(1, r'\\spatialfiles.bcgov\work\srm\sry\Local\scripts\python\credentials')
 from credential_access import *
 
-# %% 
-############ log in and set up your AGO connection
-# Depending on your script, you may want to handle passwords differently
 url = 'http://governmentofbc.maps.arcgis.com' # change to your url, whether maphub, geohub, or other
 gis = GIS(url, agol_username, agol_password)
 

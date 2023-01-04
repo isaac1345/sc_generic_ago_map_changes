@@ -17,14 +17,7 @@ from arcgis.gis import GIS
 
 # %% 
 ############ Functions and classes
-
-# Recursion required if layers are nested in groups
-# def recursive_layer_changes():
-#     pass
-
-# def dash_sidebar_changes
-
-# Classes are a nice way to organize and navigate the changes you want to make
+# Classes for both maps and dashboards
 class derived_map:
     def __init__(self,primary_id, new_id, vis_list=[], del_list=[]):
         self.primary_id = primary_id
@@ -64,4 +57,3 @@ class derived_dashboard:
     def push(self): # push changes to the new_id
         self.deriv_wm_item = gis.content.get(self.new_id)
         self.deriv_wm_item.update(data = self.prim_db_json)
-
